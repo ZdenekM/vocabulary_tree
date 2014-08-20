@@ -2,9 +2,11 @@ cmake_minimum_required(VERSION 2.8.3)
 project(vocabulary_tree)
 
 find_package(catkin REQUIRED COMPONENTS
-  opencv2
+#  opencv2
   roscpp
 )
+
+find_package(OpenCV REQUIRED)
 
 ################################################
 #                                              #
@@ -15,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
     LIBRARIES ${PROJECT_NAME}
     INCLUDE_DIRS include
+    DEPENDS OpenCV
 )
 
 ################################################
@@ -24,17 +27,18 @@ catkin_package(
 ################################################
 
 # SSE
-rosbuild_check_for_sse()
-add_definitions(${SSE_FLAGS})
+#rosbuild_check_for_sse()
+#add_definitions(${SSE_FLAGS})
+add_definitions(-DFOVIS_USE_SSE)
 
-include_directories(include SYSTEM ${Eigen_INCLUDE_DIRS})
+find_package(Eigen)
+include_directories(include SYSTEM ${Eigen_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 
 add_library(${PROJECT_NAME}
     src/database.cpp
     src/generic_tree.cpp
 )
-
-find_package(Eigen)
+target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBRARIES})
 
 add_executable(make_tree src/make_tree.cpp)
 

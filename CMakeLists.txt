@@ -4,6 +4,7 @@ project(vocabulary_tree)
 find_package(catkin REQUIRED COMPONENTS
 #  opencv2
   roscpp
+  cmake_modules
 )
 
 find_package(OpenCV REQUIRED)
@@ -31,8 +32,11 @@ catkin_package(
 #add_definitions(${SSE_FLAGS})
 add_definitions(-DFOVIS_USE_SSE)
 
-find_package(Eigen)
+find_package(Eigen REQUIRED)
+find_package(OpenCV)
 include_directories(include SYSTEM ${Eigen_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
+
+#target_link_libraries(my_awesome_library ${OpenCV_LIBRARIES})
 
 add_library(${PROJECT_NAME}
     src/database.cpp

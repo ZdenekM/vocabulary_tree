@@ -5,6 +5,7 @@ find_package(catkin REQUIRED COMPONENTS
 #  opencv2
   roscpp
   cmake_modules
+  cv_bridge
 )
 
 find_package(OpenCV REQUIRED)
@@ -18,7 +19,7 @@ find_package(OpenCV REQUIRED)
 catkin_package(
     LIBRARIES ${PROJECT_NAME}
     INCLUDE_DIRS include
-    DEPENDS OpenCV
+    DEPENDS cv_bridge
 )
 
 ################################################
@@ -33,8 +34,8 @@ catkin_package(
 add_definitions(-DFOVIS_USE_SSE)
 
 find_package(Eigen REQUIRED)
-find_package(OpenCV)
-include_directories(include SYSTEM ${Eigen_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
+#find_package(OpenCV)
+include_directories(include SYSTEM ${Eigen_INCLUDE_DIRS})
 
 #target_link_libraries(my_awesome_library ${OpenCV_LIBRARIES})
 
@@ -42,7 +43,7 @@ add_library(${PROJECT_NAME}
     src/database.cpp
     src/generic_tree.cpp
 )
-target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
 add_executable(make_tree src/make_tree.cpp)
 
